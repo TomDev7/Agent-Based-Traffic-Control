@@ -52,7 +52,7 @@
           <arguments>
             <argument>-classpath</argument>
             <classpath />
-            <argument>com.example.AkkaQuickstart</argument>
+            <argument>org.traffic.Main</argument>
           </arguments>
         </configuration>
       </plugin>
