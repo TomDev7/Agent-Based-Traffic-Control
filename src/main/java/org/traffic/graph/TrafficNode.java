@@ -7,4 +7,8 @@ public class TrafficNode {
     public TrafficNode(int nodeId) {
         this.nodeId = nodeId;
     }
+
+    public int getNodeId() {
+        return nodeId;
+    }
 }
