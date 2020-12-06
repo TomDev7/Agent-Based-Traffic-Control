@@ -27,7 +27,7 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
         super(context);
 
         this.trafficNode = tn;
-        System.out.println("Actor " + this + " is set to node " + this.trafficNode);
+        System.out.println("Actor " + this + " is set to node " + this.trafficNode + " (id: " + this.trafficNode.getNodeId() + ")");
     }
 
 
