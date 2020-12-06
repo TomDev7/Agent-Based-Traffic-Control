@@ -5,47 +5,12 @@ import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
-import org.traffic.graph.TrafficManoeuvre;
-import org.traffic.messages.TrafficAction;
-import org.traffic.messages.TrafficCallback;
+import org.traffic.messages.InformationMessage;
+import org.traffic.messages.RequestMessage;
+import org.traffic.messages.RequestReplyMessage;
+import org.traffic.messages.TrafficMessage;
 
-public class TrafficAgent extends AbstractBehavior<TrafficAgent.TrafficMessage> {
-
-    // ===== Message Classes:
-
-    public interface TrafficMessage {}
-
-    public static class InformationMessage implements TrafficMessage {
-
-        private TrafficAction actionTaken;
-        private TrafficManoeuvre trafficManoeuvre;
-
-        public InformationMessage(TrafficAction actionTaken, TrafficManoeuvre trafficManoeuvre) {
-            this.actionTaken = actionTaken;
-            this.trafficManoeuvre = trafficManoeuvre;
-        }
-    }
-
-    public static class RequestMessage implements TrafficMessage {
-
-        private TrafficAction actionToBeTaken;
-        private TrafficManoeuvre manoeuvre;
-
-        public RequestMessage(TrafficAction actionToBeTaken, TrafficManoeuvre manoeuvre) {
-            this.actionToBeTaken = actionToBeTaken;
-            this.manoeuvre = manoeuvre;
-        }
-    }
-
-    public static class RequestReplyMessage implements TrafficMessage {
-
-        private TrafficCallback callbackToRequest;
-
-        public RequestReplyMessage(TrafficCallback callbackToRequest) {
-            this.callbackToRequest = callbackToRequest;
-        }
-    }
-
+public class TrafficAgent extends AbstractBehavior<TrafficMessage> {
 
 
     // ===== Agent setup:
@@ -75,21 +40,21 @@ public class TrafficAgent extends AbstractBehavior<TrafficAgent.TrafficMessage> 
 
     private Behavior<TrafficMessage> onInformationMessage(InformationMessage informationMessage) {
 
-        System.out.println("Traffic Information: " + informationMessage.trafficManoeuvre.toString() + " through " + this.toString() + " is now " + informationMessage.actionTaken);
+        System.out.println("Traffic Information: " + informationMessage.getTrafficManoeuvre().toString() + " through " + this.toString() + " is now " + informationMessage.getActionTaken());
 
         return this;    // 'this' because the Agent's behaviour does not change for the next message (we can call it a state)
     }
 
     private Behavior<TrafficMessage> onRequestMessage(RequestMessage requestMessage) {
 
-        System.out.println("request message received: " + requestMessage.actionToBeTaken.toString() + " " + requestMessage.manoeuvre.toString());
+        System.out.println("request message received: " + requestMessage.getActionToBeTaken().toString() + " " + requestMessage.getManoeuvre().toString());
 
         return this;    // 'this' because the Agent's behaviour does not change for the next message (we can call it a state)
     }
 
     private Behavior<TrafficMessage> onRequestReplyMessage(RequestReplyMessage requestReplyMessage) {
 
-        System.out.println("Request replied: " + requestReplyMessage.callbackToRequest.toString());
+        System.out.println("Request replied: " + requestReplyMessage.getCallbackToRequest().toString());
 
         return this;    // 'this' because the Agent's behaviour does not change for the next message (we can call it a state)
     }
