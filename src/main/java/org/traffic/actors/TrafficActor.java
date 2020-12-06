@@ -1,28 +1,33 @@
-package org.traffic.agents;
+package org.traffic.actors;
 
 import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
+import org.traffic.graph.TrafficNode;
 import org.traffic.messages.InformationMessage;
 import org.traffic.messages.RequestMessage;
 import org.traffic.messages.RequestReplyMessage;
 import org.traffic.messages.TrafficMessage;
 
-public class TrafficAgent extends AbstractBehavior<TrafficMessage> {
+public class TrafficActor extends AbstractBehavior<TrafficMessage> {
 
 
     // ===== Agent setup:
 
     private String agentState = "state 1";
+    private TrafficNode trafficNode;
 
-    public static Behavior<TrafficMessage> create() {
-        return Behaviors.setup(context -> new TrafficAgent(context));
+    public static Behavior<TrafficMessage> create(TrafficNode tn) {
+        return Behaviors.setup(context -> new TrafficActor(context, tn));
     }
 
-    private TrafficAgent(ActorContext<TrafficMessage> context) {
+    private TrafficActor(ActorContext<TrafficMessage> context, TrafficNode tn) {
         super(context);
+
+        this.trafficNode = tn;
+        System.out.println("Actor " + this + " is set to node " + this.trafficNode);
     }
 
 
