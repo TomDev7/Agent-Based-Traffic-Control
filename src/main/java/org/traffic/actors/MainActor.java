@@ -17,6 +17,10 @@ import java.util.ArrayList;
 
 public class MainActor extends AbstractBehavior<String> {
 
+    ArrayList<TrafficNode> trafficNodesList = new ArrayList<>();
+    ArrayList<TrafficEdge> trafficEdgesList = new ArrayList<>();
+    ArrayList<ActorRef<TrafficMessage>> actorRefsList = new ArrayList<>();
+
     public static Behavior<String> create() {
 
         return Behaviors.setup(MainActor::new);
@@ -33,9 +37,24 @@ public class MainActor extends AbstractBehavior<String> {
 
     private Behavior<String> start() {
 
-        // ===== creating traffic network nodes
+        createTrafficNetworkNodes();
+        createTrafficNetworkEdges();
+        addNeighborsToNetworkNodes();
+        addAvailableManoeuvresToNetworkNodes();
+        createActorsForTrafficNodes();
 
-        ArrayList<TrafficNode> trafficNodesList = new ArrayList<>();
+
+        // ===== sending mock messages
+
+        TrafficAction ta = TrafficAction.OPEN;
+        TrafficManoeuvre tm = new TrafficManoeuvre(trafficNodesList.get(0), trafficNodesList.get(1));
+
+        actorRefsList.get(0).tell(new InformationMessage(ta, tm));
+
+        return Behaviors.same();
+    }
+
+    void createTrafficNetworkNodes() {
 
         trafficNodesList.add(new TrafficNode(0));
         trafficNodesList.add(new TrafficNode(1));
@@ -55,10 +74,9 @@ public class MainActor extends AbstractBehavior<String> {
         trafficNodesList.add(new TrafficNode(15));
         trafficNodesList.add(new TrafficNode(16));
         trafficNodesList.add(new TrafficNode(17));
+    }
 
-        // ===== creating traffic network edges
-
-        ArrayList<TrafficEdge> trafficEdgesList = new ArrayList<>();
+    void createTrafficNetworkEdges() {
 
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(0), trafficNodesList.get(1)));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(1), trafficNodesList.get(2)));
@@ -81,16 +99,18 @@ public class MainActor extends AbstractBehavior<String> {
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(16), trafficNodesList.get(17)));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(16), trafficNodesList.get(2)));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(17), trafficNodesList.get(17)));
+    }
 
-        // ===== adding neighbors to network nodes
+    void addNeighborsToNetworkNodes() {
 
         for (TrafficEdge te : trafficEdgesList) {
 
             te.left.neighborNodes.add(te.right);
             te.right.neighborNodes.add(te.left);
         }
+    }
 
-        // ===== adding available manoeuvres to network nodes
+    void addAvailableManoeuvresToNetworkNodes() {
 
         for (TrafficNode tn : trafficNodesList) {
 
@@ -105,26 +125,13 @@ public class MainActor extends AbstractBehavior<String> {
                 }
             }
         }
+    }
 
-        // ===== creating Actors for all traffic nodes
-
-        ArrayList<ActorRef<TrafficMessage>> actorRefsList = new ArrayList<>();
+    void createActorsForTrafficNodes() {
 
         for (TrafficNode tn : trafficNodesList) {
 
             actorRefsList.add(getContext().spawn(TrafficActor.create(tn), "actor" + tn.getNodeId()));
         }
-
-
-
-        // ===== sending mock messages
-
-
-        TrafficAction ta = TrafficAction.OPEN;
-        TrafficManoeuvre tm = new TrafficManoeuvre(trafficNodesList.get(0), trafficNodesList.get(1));
-
-        actorRefsList.get(0).tell(new InformationMessage(ta, tm));
-
-        return Behaviors.same();
     }
 }
