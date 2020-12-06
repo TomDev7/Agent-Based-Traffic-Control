@@ -6,6 +6,7 @@ import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
+import org.traffic.graph.TrafficEdge;
 import org.traffic.graph.TrafficManoeuvre;
 import org.traffic.graph.TrafficNode;
 import org.traffic.messages.InformationMessage;
@@ -32,26 +33,97 @@ public class MainActor extends AbstractBehavior<String> {
 
     private Behavior<String> start() {
 
+        // ===== creating traffic network nodes
+
         ArrayList<TrafficNode> trafficNodesList = new ArrayList<>();
 
         trafficNodesList.add(new TrafficNode(1));
+        trafficNodesList.add(new TrafficNode(2));
+        trafficNodesList.add(new TrafficNode(3));
+        trafficNodesList.add(new TrafficNode(4));
+        trafficNodesList.add(new TrafficNode(5));
+        trafficNodesList.add(new TrafficNode(6));
+        trafficNodesList.add(new TrafficNode(7));
+        trafficNodesList.add(new TrafficNode(8));
+        trafficNodesList.add(new TrafficNode(9));
+        trafficNodesList.add(new TrafficNode(10));
+        trafficNodesList.add(new TrafficNode(11));
+        trafficNodesList.add(new TrafficNode(12));
+        trafficNodesList.add(new TrafficNode(13));
+        trafficNodesList.add(new TrafficNode(14));
+        trafficNodesList.add(new TrafficNode(15));
+        trafficNodesList.add(new TrafficNode(16));
+        trafficNodesList.add(new TrafficNode(17));
+        trafficNodesList.add(new TrafficNode(18));
 
-        TrafficNode tn1 = new TrafficNode(1);
-        TrafficNode tn2 = new TrafficNode(2);
+        // ===== creating traffic network edges
 
-        ActorRef<TrafficMessage> actor1Ref = getContext().spawn(TrafficActor.create(tn1), "tn1");
-        ActorRef<TrafficMessage> actor2Ref = getContext().spawn(TrafficActor.create(tn2), "tn1");
+        ArrayList<TrafficEdge> trafficEdgesList = new ArrayList<>();
 
-        System.out.println("tn1: " + actor1Ref);
-        System.out.println("tn2: " + actor2Ref);
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(1), trafficNodesList.get(2)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(2), trafficNodesList.get(3)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(3), trafficNodesList.get(4)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(4), trafficNodesList.get(5)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(5), trafficNodesList.get(6)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(6), trafficNodesList.get(7)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(7), trafficNodesList.get(8)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(8), trafficNodesList.get(9)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(9), trafficNodesList.get(10)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(10), trafficNodesList.get(11)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(11), trafficNodesList.get(12)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(12), trafficNodesList.get(13)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(13), trafficNodesList.get(14)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(12), trafficNodesList.get(14)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(14), trafficNodesList.get(15)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(15), trafficNodesList.get(16)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(16), trafficNodesList.get(17)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(16), trafficNodesList.get(2)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(17), trafficNodesList.get(18)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(17), trafficNodesList.get(3)));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(18), trafficNodesList.get(18)));
+
+        // ===== adding neighbors to network nodes
+
+        for (TrafficEdge te : trafficEdgesList) {
+
+            te.left.neighborNodes.add(te.right);
+            te.right.neighborNodes.add(te.left);
+        }
+
+        // ===== adding available manoeuvres to network nodes
+
+        for (TrafficNode tn : trafficNodesList) {
+
+            for (TrafficNode tnn1 : tn.neighborNodes) {
+
+                for (TrafficNode tnn2 : tn.neighborNodes) {
+
+                    if (tnn1.getNodeId() != tnn2.getNodeId()) {
+
+                        tn.availableManoeuvres.add(new TrafficManoeuvre(tnn1, tnn2));
+                    }
+                }
+            }
+        }
+
+        // ===== creating Actors for all traffic nodes
+
+        ArrayList<ActorRef<TrafficMessage>> actorRefsList = new ArrayList<>();
+
+        for (TrafficNode tn : trafficNodesList) {
+
+            actorRefsList.add(getContext().spawn(TrafficActor.create(tn), "actor" + tn.getNodeId()));
+        }
+
+
 
         // ===== sending mock messages
 
 
         TrafficAction ta = TrafficAction.OPEN;
-        TrafficManoeuvre tm = new TrafficManoeuvre(tn1, tn2);
+        TrafficManoeuvre tm = new TrafficManoeuvre(trafficNodesList.get(0), trafficNodesList.get(1));
 
-        actor1Ref.tell(new InformationMessage(ta, tm));
+        actorRefsList.get(0).tell(new InformationMessage(ta, tm));
 
         return Behaviors.same();
     }

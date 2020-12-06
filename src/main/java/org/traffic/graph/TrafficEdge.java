@@ -1,8 +1,8 @@
 package org.traffic.graph;
 
 public class TrafficEdge {
-  private TrafficNode left;
-  private TrafficNode right;
+  public TrafficNode left;
+  public TrafficNode right;
 
   public TrafficEdge(TrafficNode left, TrafficNode right) {
     this.left = left;
