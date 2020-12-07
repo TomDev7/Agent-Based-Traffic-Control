@@ -6,14 +6,19 @@ import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
+import org.graphstream.graph.implementations.SingleGraph;
 import org.traffic.graph.TrafficEdge;
 import org.traffic.graph.TrafficManoeuvre;
 import org.traffic.graph.TrafficNode;
 import org.traffic.messages.InformationMessage;
 import org.traffic.messages.TrafficAction;
 import org.traffic.messages.TrafficMessage;
-
 import java.util.ArrayList;
+
+import org.graphstream.graph.*;
+import org.graphstream.graph.implementations.*;
+
+
 
 public class MainActor extends AbstractBehavior<String> {
 
@@ -42,6 +47,8 @@ public class MainActor extends AbstractBehavior<String> {
         addNeighborsToNetworkNodes();
         addAvailableManoeuvresToNetworkNodes();
         createActorsForTrafficNodes();
+
+        //createGraph();
 
 
         // ===== sending mock messages
@@ -133,5 +140,24 @@ public class MainActor extends AbstractBehavior<String> {
 
             actorRefsList.add(getContext().spawn(TrafficActor.create(tn), "actor" + tn.getNodeId()));
         }
+    }
+
+    void createGraph() {
+
+        System.setProperty("org.graphstream.ui", "swing");
+
+        Graph graph = new SingleGraph("Tutorial 1");
+
+        for (TrafficNode tn : trafficNodesList) {
+
+            graph.addNode("" + tn.getNodeId());
+        }
+
+        for (TrafficEdge te : trafficEdgesList) {
+
+            graph.addEdge("" + te.left.getNodeId() + te.right.getNodeId(), te.left.getNodeId() + "", te.right.getNodeId() + "");
+        }
+
+        graph.display();
     }
 }
