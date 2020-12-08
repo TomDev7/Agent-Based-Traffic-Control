@@ -5,11 +5,9 @@ import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
+import org.traffic.graph.TrafficManoeuvre;
 import org.traffic.graph.TrafficNode;
-import org.traffic.messages.InformationMessage;
-import org.traffic.messages.RequestMessage;
-import org.traffic.messages.RequestReplyMessage;
-import org.traffic.messages.TrafficMessage;
+import org.traffic.messages.*;
 
 public class TrafficActor extends AbstractBehavior<TrafficMessage> {
 

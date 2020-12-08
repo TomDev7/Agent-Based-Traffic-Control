@@ -10,6 +10,7 @@ import org.traffic.graph.TrafficEdge;
 import org.traffic.graph.TrafficManoeuvre;
 import org.traffic.graph.TrafficNode;
 import org.traffic.messages.InformationMessage;
+import org.traffic.messages.RequestMessage;
 import org.traffic.messages.TrafficAction;
 import org.traffic.messages.TrafficMessage;
 
@@ -132,6 +133,7 @@ public class MainActor extends AbstractBehavior<String> {
         for (TrafficNode tn : trafficNodesList) {
 
             actorRefsList.add(getContext().spawn(TrafficActor.create(tn), "actor" + tn.getNodeId()));
+            tn.nodeActor = actorRefsList.get(actorRefsList.size()-1);
         }
     }
 }
