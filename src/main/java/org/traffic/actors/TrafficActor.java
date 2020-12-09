@@ -5,9 +5,19 @@ import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
+import com.sun.tools.javac.util.Pair;
 import org.traffic.graph.TrafficManoeuvre;
 import org.traffic.graph.TrafficNode;
-import org.traffic.messages.*;
+import org.traffic.messages.InformationMessage;
+import org.traffic.messages.RequestMessage;
+import org.traffic.messages.RequestReplyMessage;
+import org.traffic.messages.TrafficMessage;
+import org.traffic.steering.TrafficCondition;
+import org.traffic.steering.TrafficLight;
+import org.traffic.steering.TrafficLightState;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrafficActor extends AbstractBehavior<TrafficMessage> {
 
@@ -16,6 +26,8 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
 
     private String agentState = "state 1";
     private TrafficNode trafficNode;
+    private ArrayList<TrafficLight> trafficLights = new ArrayList<>();
+    private ArrayList<Pair<TrafficLight, TrafficCondition>> trafficLevelForManoeuvre = new ArrayList<>();   //pairs particular manoeuvre with number of cars awaiting for it
 
     public static Behavior<TrafficMessage> create(TrafficNode tn) {
         return Behaviors.setup(context -> new TrafficActor(context, tn));
@@ -26,6 +38,12 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
 
         this.trafficNode = tn;
         System.out.println("Actor " + this + " is set to node " + this.trafficNode + " (id: " + this.trafficNode.getNodeId() + ")");
+
+        for (TrafficManoeuvre tm : tn.availableManoeuvres) {
+
+            trafficLights.add(new TrafficLight(tm, TrafficLightState.RED));
+            trafficLevelForManoeuvre.add(Pair.of(trafficLights.get(trafficLights.size()-1), TrafficCondition.NONE));    //at the beginning it is assumed there is no traffic
+        }
     }
 
 

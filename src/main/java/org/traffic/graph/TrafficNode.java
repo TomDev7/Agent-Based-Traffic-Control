@@ -13,6 +13,8 @@ public class TrafficNode {
     public ArrayList<TrafficNode> neighborNodes = new ArrayList<>();
     public ArrayList<TrafficManoeuvre> availableManoeuvres = new ArrayList<>();
 
+
+
     public TrafficNode(int nodeId) {
         this.nodeId = nodeId;
     }
