@@ -1,11 +1,11 @@
 package org.traffic.graph;
 
 public class TrafficEdge {
-  public TrafficNode left;
-  public TrafficNode right;
+  public TrafficNode source;
+  public TrafficNode destination;
 
-  public TrafficEdge(TrafficNode left, TrafficNode right) {
-    this.left = left;
-    this.right = right;
+  public TrafficEdge(TrafficNode source, TrafficNode destination) {
+    this.source = source;
+    this.destination = destination;
   }
 }

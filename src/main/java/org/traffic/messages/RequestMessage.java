@@ -1,15 +1,17 @@
 package org.traffic.messages;
 
+import org.traffic.graph.TrafficEdge;
 import org.traffic.graph.TrafficManoeuvre;
+import org.traffic.graph.TrafficNode;
 
 public class RequestMessage implements TrafficMessage {
 
     private TrafficAction actionToBeTaken;
-    private TrafficManoeuvre manoeuvre;
+    private TrafficEdge edge;
 
-    public RequestMessage(TrafficAction actionToBeTaken, TrafficManoeuvre manoeuvre) {
+    public RequestMessage(TrafficAction actionToBeTaken, TrafficEdge trafficEdge) {     //OPEN or CLOSE road to or from particular node (edge from src to dst)
         this.actionToBeTaken = actionToBeTaken;
-        this.manoeuvre = manoeuvre;
+        this.edge = edge;
     }
 
     public TrafficAction getActionToBeTaken() {
@@ -20,11 +22,11 @@ public class RequestMessage implements TrafficMessage {
         this.actionToBeTaken = actionToBeTaken;
     }
 
-    public TrafficManoeuvre getManoeuvre() {
-        return manoeuvre;
+    public TrafficEdge getEdge() {
+        return edge;
     }
 
-    public void setManoeuvre(TrafficManoeuvre manoeuvre) {
-        this.manoeuvre = manoeuvre;
+    public void setEdge(TrafficEdge edge) {
+        this.edge = edge;
     }
 }

@@ -10,7 +10,6 @@ import org.traffic.graph.TrafficEdge;
 import org.traffic.graph.TrafficManoeuvre;
 import org.traffic.graph.TrafficNode;
 import org.traffic.messages.InformationMessage;
-import org.traffic.messages.RequestMessage;
 import org.traffic.messages.TrafficAction;
 import org.traffic.messages.TrafficMessage;
 
@@ -106,8 +105,8 @@ public class MainActor extends AbstractBehavior<String> {
 
         for (TrafficEdge te : trafficEdgesList) {
 
-            te.left.neighborNodes.add(te.right);
-            te.right.neighborNodes.add(te.left);
+            te.source.neighborNodes.add(te.destination);
+            te.destination.neighborNodes.add(te.source);
         }
     }
 
