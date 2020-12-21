@@ -25,7 +25,7 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
     // ===== Agent setup:
 
     private String agentState = "state 1";
-    private TrafficNode trafficNode;
+    public TrafficNode trafficNode;
     private ArrayList<TrafficLight> trafficLights = new ArrayList<>();
     private ArrayList<Pair<TrafficLight, TrafficCondition>> trafficLevelForManoeuvre = new ArrayList<>();   //pairs particular manoeuvre with number of cars awaiting for it
 
