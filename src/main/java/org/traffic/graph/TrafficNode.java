@@ -1,6 +1,7 @@
 package org.traffic.graph;
 
 import akka.actor.typed.ActorRef;
+import com.sun.tools.javac.util.Pair;
 import org.traffic.actors.TrafficActor;
 import org.traffic.messages.TrafficMessage;
 
@@ -12,6 +13,8 @@ public class TrafficNode {
     public ActorRef<TrafficMessage> nodeActor;
     public ArrayList<TrafficNode> neighborNodes = new ArrayList<>();
     public ArrayList<TrafficManoeuvre> availableManoeuvres = new ArrayList<>();
+
+    public ArrayList<Pair<TrafficManoeuvre, Integer>> awaitingCarsForManoeuvre = new ArrayList<>();
 
 
 
