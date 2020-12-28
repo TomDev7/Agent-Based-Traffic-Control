@@ -13,6 +13,9 @@ import org.traffic.messages.InformationMessage;
 import org.traffic.messages.RequestMessage;
 import org.traffic.messages.TrafficAction;
 import org.traffic.messages.TrafficMessage;
+import org.traffic.simulation.TrafficSimulationSupervisor;
+import org.traffic.steering.TrafficLight;
+import org.traffic.steering.TrafficLightState;
 
 import java.util.ArrayList;
 
@@ -43,6 +46,7 @@ public class MainActor extends AbstractBehavior<String> {
         addNeighborsToNetworkNodes();
         addAvailableManoeuvresToNetworkNodes();
         createActorsForTrafficNodes();
+        createTrafficLights();
 
 
         // ===== sending mock messages
@@ -51,6 +55,10 @@ public class MainActor extends AbstractBehavior<String> {
         TrafficManoeuvre tm = new TrafficManoeuvre(trafficNodesList.get(0), trafficNodesList.get(1));
 
         actorRefsList.get(0).tell(new InformationMessage(ta, tm));
+
+        TrafficSimulationSupervisor tss = new TrafficSimulationSupervisor(trafficNodesList, trafficEdgesList, actorRefsList);
+        tss.initSimulation();
+        tss.startSimulation();
 
         return Behaviors.same();
     }
@@ -134,6 +142,17 @@ public class MainActor extends AbstractBehavior<String> {
 
             actorRefsList.add(getContext().spawn(TrafficActor.create(tn), "actor" + tn.getNodeId()));
             tn.nodeActor = actorRefsList.get(actorRefsList.size()-1);
+        }
+    }
+
+    void createTrafficLights() {
+
+        for (TrafficNode tn : trafficNodesList) {
+
+            for (TrafficManoeuvre tm : tn.availableManoeuvres) {
+
+                tn.trafficLights.add(new TrafficLight(tm, TrafficLightState.GREEN));
+            }
         }
     }
 }

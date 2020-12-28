@@ -3,10 +3,14 @@ package org.traffic.simulation;
 
 import akka.actor.typed.ActorRef;
 import org.traffic.graph.TrafficEdge;
+import org.traffic.graph.TrafficManoeuvre;
 import org.traffic.graph.TrafficNode;
 import org.traffic.messages.TrafficMessage;
+import org.traffic.steering.TrafficLight;
+import org.traffic.steering.TrafficLightState;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 //this class runs the simulation - "moves" cars, decides about traffic direction and changes
 //usage: initSimulation() -> startSimulation() -> pauseSimulation() -> clearSimulation()
@@ -25,6 +29,7 @@ public class TrafficSimulationSupervisor {
 
     //simulation control variables:
     private boolean runSimulation;
+    private int cycleNumber = 0;
 
     public TrafficSimulationSupervisor(ArrayList<TrafficNode> trafficNodesList, ArrayList<TrafficEdge> trafficEdgesList, ArrayList<ActorRef<TrafficMessage>> actorRefsList) {
 
@@ -36,13 +41,15 @@ public class TrafficSimulationSupervisor {
     public int initSimulation() {
 
         //TODO set traffic to given nodes
+        trafficNodesList.get(1).availableManoeuvres.get(0).awaitingCarsNumber = 10;
+
         return 1;
     }
 
     public int startSimulation() {
 
         runSimulation = true;
-        simulationLoopCycle();
+        simulationLoop();
         return 1;
     }
 
@@ -54,7 +61,21 @@ public class TrafficSimulationSupervisor {
 
     public int clearSimulation() {
 
-        //TODO iterate over all edges and nodes and clear traffic
+        for (TrafficNode tn : trafficNodesList) {
+
+            for (TrafficManoeuvre tm : tn.availableManoeuvres) {
+
+                tm.awaitingCarsNumber = 0;
+            }
+        }
+
+        for (TrafficEdge te : trafficEdgesList) {
+
+            te.carAmount = 0;
+        }
+
+        cycleNumber = 0;
+
         return 1;
     }
 
@@ -76,8 +97,83 @@ public class TrafficSimulationSupervisor {
 
     public int simulationLoopCycle() {
 
+        System.out.println("Simulation cycle " + cycleNumber);
+        printGraphReport();
 
+        // moves cars from lanes (awaiting for manoeuvre) to the edge after the node
+        for (TrafficNode tn : trafficNodesList) {
+
+            for (TrafficLight tl : tn.trafficLights) {
+
+                if (tl.getTrafficLightsState() == TrafficLightState.GREEN) {
+
+
+
+                    int carsMoved = 0;
+
+                    if (tl.getTrafficManoeuvre().awaitingCarsNumber == 0) {
+
+                    }
+                    else if (tl.getTrafficManoeuvre().awaitingCarsNumber >= CARS_PER_TICK) {
+                        tl.getTrafficManoeuvre().awaitingCarsNumber -= CARS_PER_TICK;
+                        carsMoved = CARS_PER_TICK;
+                    } else {
+                        carsMoved = tl.getTrafficManoeuvre().awaitingCarsNumber;
+                        tl.getTrafficManoeuvre().awaitingCarsNumber = 0;
+                    }
+
+                    //TODO needs a lot of optimisation - doesn't work
+                    for (TrafficEdge te : trafficEdgesList) {
+
+                        if ((te.left.getNodeId() == tl.getTrafficManoeuvre().sourceTrafficNode.getNodeId() && te.right.getNodeId() == tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId()) || (te.right.getNodeId() == tl.getTrafficManoeuvre().sourceTrafficNode.getNodeId() && te.left.getNodeId() == tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId())) {
+
+                            te.carAmount += carsMoved;
+                        }
+                    }
+
+                    System.out.println(carsMoved + " cars moved from " + tl.getTrafficManoeuvre().sourceTrafficNode + " to " + tl.getTrafficManoeuvre().destinationTrafficNode);
+
+                }
+            }
+        }
+
+        //shuffles cars waiting at the edge to lanes awaiting for manoeuvre
+        Random rand = new Random();
+
+        for (TrafficEdge te : trafficEdgesList) {
+
+            if (te.carAmount > 0) {
+
+                for (TrafficManoeuvre tm : te.right.availableManoeuvres) {
+
+                    int carsToMove = rand.nextInt(te.carAmount);
+                    te.carAmount -= carsToMove;
+                    tm.awaitingCarsNumber += carsToMove;
+                }
+
+                te.right.availableManoeuvres.get(0).awaitingCarsNumber += te.carAmount; //adding remaining cars to some manoeuvre
+            }
+        }
+
+        cycleNumber++;
 
         return 1;
     }
+
+    int printGraphReport() {
+
+        for (TrafficNode tn : trafficNodesList) {
+            for (TrafficManoeuvre tm : tn.availableManoeuvres) {
+
+                System.out.println("Node: " + tn.getNodeId() + ", manoeuvre: " + tm.toString() + ", cars waiting: " + tm.awaitingCarsNumber);
+            }
+        }
+
+        for (TrafficEdge te : trafficEdgesList) {
+            System.out.println("Edge: " + te.toString() + ", cars: " + te.carAmount);
+        }
+
+        return 1;
+    }
+
 }
