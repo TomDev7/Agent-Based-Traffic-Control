@@ -3,7 +3,6 @@ package org.traffic.utopia;
 import org.traffic.actors.TrafficActor;
 import org.traffic.actors.MainActor;
 import org.traffic.graph.TrafficEdge;
-import org.traffic.graph.TrafficNode;
 
 public class DecisionAlgorithm {
     public static double costFunction(TrafficActor trafficActor)
@@ -12,8 +11,13 @@ public class DecisionAlgorithm {
 
         for (TrafficEdge trafficEdge : MainActor.trafficEdgesList
              ) {
-            if(trafficEdge.left == trafficActor.trafficNode || trafficEdge.right == trafficActor.trafficNode){
-                costFunction += trafficEdge.carAmount * trafficEdge.trafficWage;
+            if(trafficEdge.left == trafficActor.trafficNode) {
+                costFunction += trafficEdge.carAmountLeftToRight * trafficEdge.trafficWage;
+                costFunction += trafficEdge.redLightTimer * trafficEdge.timeWage;
+            }
+
+            if(trafficEdge.right == trafficActor.trafficNode) {
+                costFunction += trafficEdge.carAmountRightToLeft * trafficEdge.trafficWage;
                 costFunction += trafficEdge.redLightTimer * trafficEdge.timeWage;
             }
         }
@@ -25,11 +29,16 @@ public class DecisionAlgorithm {
         double activeTrafficCost =0;
         for (TrafficEdge trafficEdge : MainActor.trafficEdgesList
         ){
-            if(trafficEdge.left == trafficActor.trafficNode || trafficEdge.right == trafficActor.trafficNode) {
+            if(trafficEdge.left == trafficActor.trafficNode) {
                 if (trafficEdge.redLightTimer == 0)
-                    disabledTrafficCost += trafficEdge.redLightTimer * trafficEdge.timeWage + trafficEdge.trafficWage * trafficEdge.carAmount;
+                    disabledTrafficCost += trafficEdge.redLightTimer * trafficEdge.timeWage + trafficEdge.trafficWage * trafficEdge.carAmountLeftToRight;
                 else
-                    activeTrafficCost += trafficEdge.trafficWage * trafficEdge.carAmount;
+                    activeTrafficCost += trafficEdge.trafficWage * trafficEdge.carAmountLeftToRight;
+            } else if (trafficEdge.right == trafficActor.trafficNode) {
+                if (trafficEdge.redLightTimer == 0)
+                    disabledTrafficCost += trafficEdge.redLightTimer * trafficEdge.timeWage + trafficEdge.trafficWage * trafficEdge.carAmountRightToLeft;
+                else
+                    activeTrafficCost += trafficEdge.trafficWage * trafficEdge.carAmountRightToLeft;
             }
         }
         if(disabledTrafficCost > activeTrafficCost){

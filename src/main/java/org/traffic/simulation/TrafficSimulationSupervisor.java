@@ -71,7 +71,8 @@ public class TrafficSimulationSupervisor {
 
         for (TrafficEdge te : trafficEdgesList) {
 
-            te.carAmount = 0;
+            te.carAmountLeftToRight = 0;
+            te.carAmountRightToLeft = 0;
         }
 
         cycleNumber = 0;
@@ -130,9 +131,13 @@ public class TrafficSimulationSupervisor {
                         int tn_nodeID = tn.getNodeId();
                         int tl_traffic_manoeuvre_destination_traffic_node_ID = tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId();
 
-                        if ((te.left.getNodeId() == tn.getNodeId() && te.right.getNodeId() == tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId()) || (te.right.getNodeId() == tn.getNodeId() && te.left.getNodeId() == tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId())) {
+                        if (te.left.getNodeId() == tn.getNodeId() && te.right.getNodeId() == tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId()) {
 
-                            te.carAmount += carsMoved;
+                            te.carAmountLeftToRight += carsMoved;
+                            break;
+                        } else if (te.right.getNodeId() == tn.getNodeId() && te.left.getNodeId() == tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId()) {
+
+                            te.carAmountRightToLeft += carsMoved;
                             break;
                         }
                     }
@@ -148,16 +153,30 @@ public class TrafficSimulationSupervisor {
 
         for (TrafficEdge te : trafficEdgesList) {
 
-            if (te.carAmount > 0) {
+            //for cars moving A to B along the edge
+            if (te.carAmountLeftToRight > 0) {
 
                 for (TrafficManoeuvre tm : te.right.availableManoeuvres) {
 
-                    int carsToMove = rand.nextInt(te.carAmount);
-                    te.carAmount -= carsToMove;
+                    int carsToMove = rand.nextInt(te.carAmountLeftToRight);
+                    te.carAmountLeftToRight -= carsToMove;
                     tm.awaitingCarsNumber += carsToMove;
                 }
 
-                te.right.availableManoeuvres.get(0).awaitingCarsNumber += te.carAmount; //adding remaining cars to some manoeuvre
+                te.right.availableManoeuvres.get(0).awaitingCarsNumber += te.carAmountLeftToRight; //adding remaining cars to some manoeuvre
+            }
+
+            //for cars moving B to A along the edge
+            if (te.carAmountRightToLeft > 0) {
+
+                for (TrafficManoeuvre tm : te.left.availableManoeuvres) {
+
+                    int carsToMove = rand.nextInt(te.carAmountRightToLeft);
+                    te.carAmountRightToLeft -= carsToMove;
+                    tm.awaitingCarsNumber += carsToMove;
+                }
+
+                te.left.availableManoeuvres.get(0).awaitingCarsNumber += te.carAmountRightToLeft; //adding remaining cars to some manoeuvre
             }
         }
 
@@ -176,7 +195,8 @@ public class TrafficSimulationSupervisor {
         }
 
         for (TrafficEdge te : trafficEdgesList) {
-            System.out.println("Edge: " + te.toString() + ", cars: " + te.carAmount);
+            System.out.println("Edge: " + te.toString() + ", cars A to B: " + te.carAmountLeftToRight);
+            System.out.println("Edge: " + te.toString() + ", cars B to A: " + te.carAmountRightToLeft);
         }
 
         return 1;

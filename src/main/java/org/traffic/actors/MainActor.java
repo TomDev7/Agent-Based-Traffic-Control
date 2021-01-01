@@ -10,13 +10,14 @@ import org.traffic.graph.TrafficEdge;
 import org.traffic.graph.TrafficManoeuvre;
 import org.traffic.graph.TrafficNode;
 import org.traffic.messages.InformationMessage;
-import org.traffic.messages.RequestMessage;
 import org.traffic.messages.TrafficAction;
 import org.traffic.messages.TrafficMessage;
 import org.traffic.simulation.TrafficSimulationSupervisor;
 import org.traffic.steering.TrafficLight;
 import org.traffic.steering.TrafficLightState;
+import org.traffic.visualisation.GraphUI;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class MainActor extends AbstractBehavior<String> {
@@ -47,6 +48,7 @@ public class MainActor extends AbstractBehavior<String> {
         addAvailableManoeuvresToNetworkNodes();
         createActorsForTrafficNodes();
         createTrafficLights();
+        initGraphUI();
 
 
         // ===== sending mock messages
@@ -154,5 +156,15 @@ public class MainActor extends AbstractBehavior<String> {
                 tn.trafficLights.add(new TrafficLight(tm, TrafficLightState.GREEN));
             }
         }
+    }
+
+    void initGraphUI() {
+
+            EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new GraphUI();
+                }
+            });
     }
 }
