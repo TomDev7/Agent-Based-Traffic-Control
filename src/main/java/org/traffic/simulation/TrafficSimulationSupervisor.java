@@ -122,12 +122,18 @@ public class TrafficSimulationSupervisor {
                         tl.getTrafficManoeuvre().awaitingCarsNumber = 0;
                     }
 
-                    //TODO needs a lot of optimisation - doesn't work
+                    //TODO needs a lot of optimisation
                     for (TrafficEdge te : trafficEdgesList) {
 
-                        if ((te.left.getNodeId() == tl.getTrafficManoeuvre().sourceTrafficNode.getNodeId() && te.right.getNodeId() == tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId()) || (te.right.getNodeId() == tl.getTrafficManoeuvre().sourceTrafficNode.getNodeId() && te.left.getNodeId() == tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId())) {
+                        int te_left_nodeID = te.left.getNodeId();
+                        int te_right_nodeID = te.right.getNodeId();
+                        int tn_nodeID = tn.getNodeId();
+                        int tl_traffic_manoeuvre_destination_traffic_node_ID = tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId();
+
+                        if ((te.left.getNodeId() == tn.getNodeId() && te.right.getNodeId() == tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId()) || (te.right.getNodeId() == tn.getNodeId() && te.left.getNodeId() == tl.getTrafficManoeuvre().destinationTrafficNode.getNodeId())) {
 
                             te.carAmount += carsMoved;
+                            break;
                         }
                     }
 
