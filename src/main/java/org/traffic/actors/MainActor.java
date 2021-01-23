@@ -95,33 +95,31 @@ public class MainActor extends AbstractBehavior<String> {
         trafficNodesList.add(new TrafficNode(15));
         trafficNodesList.add(new TrafficNode(16));
         trafficNodesList.add(new TrafficNode(17));
-        trafficNodesList.add(new TrafficNode(18));
     }
 
     void createTrafficNetworkEdges() {
-
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(0), trafficNodesList.get(1), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(1), trafficNodesList.get(2), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(1), trafficNodesList.get(15), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(2), trafficNodesList.get(3), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(2), trafficNodesList.get(16), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(3), trafficNodesList.get(4), 0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(3), trafficNodesList.get(17), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(4), trafficNodesList.get(5), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(5), trafficNodesList.get(6), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(6), trafficNodesList.get(7), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(7), trafficNodesList.get(8), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(7), trafficNodesList.get(7), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(7), trafficNodesList.get(17), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(8), trafficNodesList.get(9), 0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(8), trafficNodesList.get(8), 0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(8), trafficNodesList.get(18), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(9), trafficNodesList.get(10), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(10), trafficNodesList.get(11), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(11), trafficNodesList.get(12), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(11), trafficNodesList.get(13), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(12), trafficNodesList.get(13), 0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(12), trafficNodesList.get(14), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(13), trafficNodesList.get(14), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(14), trafficNodesList.get(15), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(15), trafficNodesList.get(16), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(16), trafficNodesList.get(17), 0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(17), trafficNodesList.get(18), 0.1, 0.5));
         createGraph();
     }
 
@@ -173,25 +171,24 @@ public class MainActor extends AbstractBehavior<String> {
     }
         public void createGraph () {
             HashMap<String, Integer[]> coordinates = new HashMap<String, Integer[]>();
-            coordinates.put("0", new Integer[]{0, 0});
-            coordinates.put("1", new Integer[]{100, 100});
-            coordinates.put("2", new Integer[]{100, 70});
-            coordinates.put("3", new Integer[]{100, 50});
-            coordinates.put("4", new Integer[]{100, 20});
-            coordinates.put("5", new Integer[]{100, 0});
-            coordinates.put("6", new Integer[]{80, 0});
-            coordinates.put("7", new Integer[]{50, 0});
-            coordinates.put("8", new Integer[]{-20, 0});
-            coordinates.put("9", new Integer[]{-80, 0});
-            coordinates.put("10", new Integer[]{-80, 20});
-            coordinates.put("11", new Integer[]{-80, 100});
-            coordinates.put("12", new Integer[]{-50, 100});
-            coordinates.put("13", new Integer[]{-40, 80});
-            coordinates.put("14", new Integer[]{-30, 100});
-            coordinates.put("15", new Integer[]{0, 100});
-            coordinates.put("16", new Integer[]{0, 70});
-            coordinates.put("17", new Integer[]{0, 50});
-            coordinates.put("18", new Integer[]{-20, 50});
+            coordinates.put("0", new Integer[]{100, 100});
+            coordinates.put("1", new Integer[]{100, 70});
+            coordinates.put("2", new Integer[]{100, 50});
+            coordinates.put("3", new Integer[]{100, 20});
+            coordinates.put("4", new Integer[]{100, 0});
+            coordinates.put("5", new Integer[]{80, 0});
+            coordinates.put("6", new Integer[]{50, 0});
+            coordinates.put("7", new Integer[]{-20, 0});
+            coordinates.put("8", new Integer[]{-80, 0});
+            coordinates.put("9", new Integer[]{-80, 20});
+            coordinates.put("10", new Integer[]{-80, 100});
+            coordinates.put("11", new Integer[]{-50, 100});
+            coordinates.put("12", new Integer[]{-40, 80});
+            coordinates.put("13", new Integer[]{-30, 100});
+            coordinates.put("14", new Integer[]{0, 100});
+            coordinates.put("15", new Integer[]{0, 70});
+            coordinates.put("16", new Integer[]{0, 50});
+            coordinates.put("17", new Integer[]{-20, 50});
 
             System.setProperty("org.graphstream.ui", "swing");
             System.setProperty("gs.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
