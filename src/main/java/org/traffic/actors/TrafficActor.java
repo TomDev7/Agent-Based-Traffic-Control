@@ -14,6 +14,8 @@ import org.traffic.steering.TrafficLightState;
 
 import java.util.ArrayList;
 
+import static org.traffic.utopia.DecisionAlgorithm.changeState;
+
 public class TrafficActor extends AbstractBehavior<TrafficMessage> {
 
 
@@ -109,8 +111,19 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
 
         for (TrafficManoeuvre tm : trafficNode.availableManoeuvres) {
 
-
         }
+
+        if(changeState(trafficNode))
+        {
+            for(TrafficLight tl : trafficNode.trafficLights){
+                if(tl.getTrafficLightsState() ==  TrafficLightState.GREEN)
+                    tl.setTrafficLightsState(TrafficLightState.RED);
+                else
+                    tl.setTrafficLightsState(TrafficLightState.GREEN);
+            }
+        }
+
+
 
         // ----- TODO calculate decision based on own traffic data
 
