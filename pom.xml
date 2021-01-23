@@ -13,6 +13,7 @@
   </properties>
 
   <dependencies>
+
     <dependency>
       <groupId>com.typesafe.akka</groupId>
       <artifactId>akka-actor-typed_2.13</artifactId>
@@ -29,8 +30,29 @@
       <version>${akka.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.graphstream</groupId>
+      <artifactId>gs-core</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.graphstream</groupId>
+      <artifactId>gs-ui-swing</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.graphstream</groupId>
+      <artifactId>gs-ui-javafx</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.graphstream</groupId>
+      <artifactId>gs-algo</artifactId>
+      <version>2.0</version>
+    </dependency>
 
   </dependencies>
+
 
   <build>
     <plugins>

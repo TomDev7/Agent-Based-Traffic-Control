@@ -1,0 +1,23 @@
+node {
+
+    size: 10px;
+    text-mode: normal;
+    text-background-mode: plain;
+    text-style: bold;
+    text-padding: 2px;
+    shape: freeplane;
+}
+sprite {
+    /*fill-color: red;*/
+    /*sprite-orientation: to;*/
+    /*shape: arrow;*/
+}
+
+edge{
+    shape: cubic-curve;
+    shape: line;
+    fill-mode: dyn-plain;
+    fill-color: green,green, yellow, red;
+    arrow-size: 3px, 2px;
+
+}
