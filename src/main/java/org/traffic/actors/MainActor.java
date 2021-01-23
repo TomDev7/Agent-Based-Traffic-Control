@@ -102,28 +102,28 @@ public class MainActor extends AbstractBehavior<String> {
 
     void createTrafficNetworkEdges() {
 
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(1), trafficNodesList.get(2),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(2), trafficNodesList.get(3),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(2), trafficNodesList.get(16),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(3), trafficNodesList.get(4),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(3), trafficNodesList.get(17),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(4), trafficNodesList.get(5),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(5), trafficNodesList.get(6),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(6), trafficNodesList.get(7),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(7), trafficNodesList.get(8),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(8), trafficNodesList.get(9),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(8), trafficNodesList.get(8),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(8), trafficNodesList.get(18),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(9), trafficNodesList.get(10),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(10), trafficNodesList.get(11),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(11), trafficNodesList.get(12),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(12), trafficNodesList.get(13),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(12), trafficNodesList.get(14),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(13), trafficNodesList.get(14),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(14), trafficNodesList.get(15),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(15), trafficNodesList.get(16),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(16), trafficNodesList.get(17),0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(17), trafficNodesList.get(18),0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(1), trafficNodesList.get(2), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(2), trafficNodesList.get(3), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(2), trafficNodesList.get(16), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(3), trafficNodesList.get(4), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(3), trafficNodesList.get(17), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(4), trafficNodesList.get(5), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(5), trafficNodesList.get(6), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(6), trafficNodesList.get(7), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(7), trafficNodesList.get(8), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(8), trafficNodesList.get(9), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(8), trafficNodesList.get(8), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(8), trafficNodesList.get(18), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(9), trafficNodesList.get(10), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(10), trafficNodesList.get(11), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(11), trafficNodesList.get(12), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(12), trafficNodesList.get(13), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(12), trafficNodesList.get(14), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(13), trafficNodesList.get(14), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(14), trafficNodesList.get(15), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(15), trafficNodesList.get(16), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(16), trafficNodesList.get(17), 0.1, 0.5));
+        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(17), trafficNodesList.get(18), 0.1, 0.5));
         createGraph();
     }
 
@@ -158,7 +158,7 @@ public class MainActor extends AbstractBehavior<String> {
         for (TrafficNode tn : trafficNodesList) {
 
             actorRefsList.add(getContext().spawn(TrafficActor.create(tn), "actor" + tn.getNodeId()));
-            tn.nodeActor = actorRefsList.get(actorRefsList.size()-1);
+            tn.nodeActor = actorRefsList.get(actorRefsList.size() - 1);
         }
     }
 
@@ -176,67 +176,67 @@ public class MainActor extends AbstractBehavior<String> {
 
     void initGraphUI() {
 
-            EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    new GraphUI();
-                }
-            });
-
-    public void createGraph() {
-        HashMap<String, Integer[]> coordinates = new HashMap<String, Integer[]>();
-        coordinates.put("0", new Integer[]{0,0});
-        coordinates.put("1", new Integer[]{100,100});
-        coordinates.put("2", new Integer[]{100,70});
-        coordinates.put("3", new Integer[]{100,50});
-        coordinates.put("4", new Integer[]{100,20});
-        coordinates.put("5", new Integer[]{100,0});
-        coordinates.put("6", new Integer[]{80,0});
-        coordinates.put("7", new Integer[]{50,0});
-        coordinates.put("8", new Integer[]{-20,0});
-        coordinates.put("9", new Integer[]{-80,0});
-        coordinates.put("10", new Integer[]{-80,20});
-        coordinates.put("11", new Integer[]{-80,100});
-        coordinates.put("12", new Integer[]{-50,100});
-        coordinates.put("13", new Integer[]{-40,80});
-        coordinates.put("14", new Integer[]{-30,100});
-        coordinates.put("15", new Integer[]{0,100});
-        coordinates.put("16", new Integer[]{0,70});
-        coordinates.put("17", new Integer[]{0,50});
-        coordinates.put("18", new Integer[]{-20,50});
-
-        System.setProperty("org.graphstream.ui", "swing");
-        System.setProperty("gs.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-
-        Graph graph = new SingleGraph("Tutorial 1");
-        graph.setAttribute("ui.quality");
-        graph.setAttribute("ui.antialias");
-        graph.setAttribute("ui.stylesheet", "url('file://src/main/java/org/traffic/actors/stylesheet.css')");
-        SpriteManager sman = new SpriteManager(graph);
-        for (TrafficNode tn : trafficNodesList) {
-            String id = tn.getNodeId()+ "";
-            graph.addNode(id);
-            Node temp = graph.getNode(id);
-           temp.setAttribute("ui.label", "Node:" + id);
-            temp.setAttribute("ui.frozen");
-            temp.setAttribute("x", coordinates.get(id)[0]);
-            temp.setAttribute("y", coordinates.get(id)[1]);
-
-
-        }
-
-        float speedMax;
-        Random rand = new Random();
-        for (TrafficEdge te : trafficEdgesList) {
-            String id= "" + te.left.getNodeId() + te.right.getNodeId();
-            graph.addEdge(id, te.left.getNodeId() + "", te.right.getNodeId() + "");
-            Edge edge = graph.getEdge(id);
-            edge.setAttribute("ui.class", "Edge" + id);
-            edge.setAttribute("speedMax", rand.nextInt(100));
-            speedMax = (float) edge.getNumber("speedMax");
-            edge.setAttribute("ui.color", speedMax/100);
-        }
-        Viewer viewer = graph.display(false);
-        View view = viewer.getDefaultView();
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new GraphUI();
+            }
+        });
     }
-}
+        public void createGraph () {
+            HashMap<String, Integer[]> coordinates = new HashMap<String, Integer[]>();
+            coordinates.put("0", new Integer[]{0, 0});
+            coordinates.put("1", new Integer[]{100, 100});
+            coordinates.put("2", new Integer[]{100, 70});
+            coordinates.put("3", new Integer[]{100, 50});
+            coordinates.put("4", new Integer[]{100, 20});
+            coordinates.put("5", new Integer[]{100, 0});
+            coordinates.put("6", new Integer[]{80, 0});
+            coordinates.put("7", new Integer[]{50, 0});
+            coordinates.put("8", new Integer[]{-20, 0});
+            coordinates.put("9", new Integer[]{-80, 0});
+            coordinates.put("10", new Integer[]{-80, 20});
+            coordinates.put("11", new Integer[]{-80, 100});
+            coordinates.put("12", new Integer[]{-50, 100});
+            coordinates.put("13", new Integer[]{-40, 80});
+            coordinates.put("14", new Integer[]{-30, 100});
+            coordinates.put("15", new Integer[]{0, 100});
+            coordinates.put("16", new Integer[]{0, 70});
+            coordinates.put("17", new Integer[]{0, 50});
+            coordinates.put("18", new Integer[]{-20, 50});
+
+            System.setProperty("org.graphstream.ui", "swing");
+            System.setProperty("gs.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
+
+            Graph graph = new SingleGraph("Tutorial 1");
+            graph.setAttribute("ui.quality");
+            graph.setAttribute("ui.antialias");
+            graph.setAttribute("ui.stylesheet", "url('file://src/main/java/org/traffic/actors/stylesheet.css')");
+            SpriteManager sman = new SpriteManager(graph);
+            for (TrafficNode tn : trafficNodesList) {
+                String id = tn.getNodeId() + "";
+                graph.addNode(id);
+                Node temp = graph.getNode(id);
+                temp.setAttribute("ui.label", "Node:" + id);
+                temp.setAttribute("ui.frozen");
+                temp.setAttribute("x", coordinates.get(id)[0]);
+                temp.setAttribute("y", coordinates.get(id)[1]);
+
+
+            }
+
+            float speedMax;
+            Random rand = new Random();
+            for (TrafficEdge te : trafficEdgesList) {
+                String id = "" + te.left.getNodeId() + te.right.getNodeId();
+                graph.addEdge(id, te.left.getNodeId() + "", te.right.getNodeId() + "");
+                Edge edge = graph.getEdge(id);
+                edge.setAttribute("ui.class", "Edge" + id);
+                edge.setAttribute("speedMax", rand.nextInt(100));
+                speedMax = (float) edge.getNumber("speedMax");
+                edge.setAttribute("ui.color", speedMax / 100);
+            }
+            Viewer viewer = graph.display(false);
+            View view = viewer.getDefaultView();
+        }
+    }

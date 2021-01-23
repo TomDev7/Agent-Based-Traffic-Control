@@ -18,19 +18,6 @@ public class Main {
     ActorRef<String> trafficSystem = ActorSystem.create(MainActor.create(), "MainSystem");
     trafficSystem.tell("start");
 
-//    System.setProperty("org.graphstream.ui", "swing");
-//
-//    Graph graph = new SingleGraph("Tutorial 1");
-
-//    graph.addNode("A");
-//    graph.addNode("B");
-//    graph.addNode("C");
-//    graph.addEdge("AB", "A", "B");
-//    graph.addEdge("BC", "B", "C");
-//    graph.addEdge("CA", "C", "A");
-//    Viewer viewer = graph.display();
-//    View view = viewer.getDefaultView();
-
   }
 }
 
