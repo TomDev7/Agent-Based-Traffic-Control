@@ -56,8 +56,6 @@ public class MainActor extends AbstractBehavior<String> {
         addAvailableManoeuvresToNetworkNodes();
         createActorsForTrafficNodes();
 
-        //createGraph();
-
 
         // ===== sending mock messages
 
@@ -94,7 +92,6 @@ public class MainActor extends AbstractBehavior<String> {
 
     void createTrafficNetworkEdges() {
 
-//        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(1), trafficNodesList.get(1)));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(1), trafficNodesList.get(2)));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(2), trafficNodesList.get(3)));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(2), trafficNodesList.get(16)));
@@ -117,11 +114,6 @@ public class MainActor extends AbstractBehavior<String> {
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(15), trafficNodesList.get(16)));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(16), trafficNodesList.get(17)));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(17), trafficNodesList.get(18)));
-
-//        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(15), trafficNodesList.get(1)));
-//        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(16), trafficNodesList.get(17)));
-//        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(16), trafficNodesList.get(2)));
-//        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(17), trafficNodesList.get(17)));
         createGraph();
     }
 
@@ -194,9 +186,6 @@ public class MainActor extends AbstractBehavior<String> {
             graph.addNode(id);
             Node temp = graph.getNode(id);
            temp.setAttribute("ui.label", "Node:" + id);
-
-//            Sprite s = sman.addSprite("S" + id);
-//            s.attachToNode(id);
             temp.setAttribute("ui.frozen");
             temp.setAttribute("x", coordinates.get(id)[0]);
             temp.setAttribute("y", coordinates.get(id)[1]);
@@ -215,19 +204,8 @@ public class MainActor extends AbstractBehavior<String> {
             speedMax = (float) edge.getNumber("speedMax");
             edge.setAttribute("ui.color", speedMax/100);
         }
-//        for (Edge edge: graph.getEachEdge()){}
-        Viewer viewer = graph.display();
-        graph.display( false );
+        Viewer viewer = graph.display(false);
         View view = viewer.getDefaultView();
-
-//        // pozycja
-//        graph.nodes().forEach(n -> { // Only in GraphStream 2.0, otherwise use the traditional loop in lower versions
-//            double[] relative = Toolkit.nodePosition(n);
-//            System.out.println("Relative = "+relative[0]+" "+relative[1]);
-//
-//            Point3 position = view.getCamera().transformGuToPx(Toolkit.nodePosition(n)[0], Toolkit.nodePosition(n)[1], 0);
-//            System.out.println("Coordinate = "+position);
-//        });
 
 
     }
