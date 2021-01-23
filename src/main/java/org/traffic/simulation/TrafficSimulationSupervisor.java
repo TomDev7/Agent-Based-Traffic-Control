@@ -2,9 +2,11 @@ package org.traffic.simulation;
 
 
 import akka.actor.typed.ActorRef;
+import org.traffic.actors.TrafficActor;
 import org.traffic.graph.TrafficEdge;
 import org.traffic.graph.TrafficManoeuvre;
 import org.traffic.graph.TrafficNode;
+import org.traffic.messages.SimulationSyncMessage;
 import org.traffic.messages.TrafficMessage;
 import org.traffic.steering.TrafficLight;
 import org.traffic.steering.TrafficLightState;
@@ -22,8 +24,8 @@ public class TrafficSimulationSupervisor {
     ArrayList<ActorRef<TrafficMessage>> actorRefsList = new ArrayList<>();
 
     //define simulation variables:
-    public TrafficNode startNode;   //TODO
-    public int numOfCars;   //TODO
+    public TrafficNode startNode;   //TODO assign appropriate value
+    public int numOfCars;   //TODO assign appropriate value
     public static int TIME_TICK_IN_MILLISECONDS = 5000;
     public static int CARS_PER_TICK = 3;    //how many cars can go through a node (take a manoeuvre) during one simulation clock tick
 
@@ -85,6 +87,7 @@ public class TrafficSimulationSupervisor {
         while (runSimulation == true) {
 
             simulationLoopCycle();
+            sendNewIterationMessages();
 
             try {
                 Thread.sleep(TIME_TICK_IN_MILLISECONDS);
@@ -183,6 +186,16 @@ public class TrafficSimulationSupervisor {
         cycleNumber++;
 
         return 1;
+    }
+
+    private int sendNewIterationMessages() {
+
+        for (ActorRef actorRef : actorRefsList) {
+
+            actorRef.tell(new SimulationSyncMessage(cycleNumber));
+        }
+
+        return 0;
     }
 
     int printGraphReport() {

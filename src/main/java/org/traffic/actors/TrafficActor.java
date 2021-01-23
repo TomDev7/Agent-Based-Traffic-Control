@@ -6,14 +6,7 @@ import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import org.traffic.graph.TrafficNode;
-import org.traffic.messages.InformationMessage;
-import org.traffic.messages.RequestMessage;
-import org.traffic.messages.RequestReplyMessage;
-import org.traffic.messages.TrafficMessage;
-import org.traffic.steering.TrafficCondition;
-import org.traffic.steering.TrafficLight;
-
-import java.util.ArrayList;
+import org.traffic.messages.*;
 
 public class TrafficActor extends AbstractBehavior<TrafficMessage> {
 
@@ -43,6 +36,7 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
                 .onMessage(InformationMessage.class, this::onInformationMessage)
                 .onMessage(RequestMessage.class, this::onRequestMessage)
                 .onMessage(RequestReplyMessage.class, this::onRequestReplyMessage)
+                .onMessage(SimulationSyncMessage.class, this::onSimulationSyncMessage)
                 .build();
     }
 
@@ -65,6 +59,15 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
     private Behavior<TrafficMessage> onRequestReplyMessage(RequestReplyMessage requestReplyMessage) {
 
         System.out.println("Request replied: " + requestReplyMessage.getCallbackToRequest().toString());
+
+        return this;    // 'this' because the Agent's behaviour does not change for the next message (we can call it a state)
+    }
+
+    private Behavior<TrafficMessage> onSimulationSyncMessage(SimulationSyncMessage simulationSyncMessage) {
+
+        System.out.println("Simulation Sync Message Received. Node: " + this.trafficNode.getNodeId() + ", iteration number: " + simulationSyncMessage.getSimulationIterationNumber());
+
+        // here main logic of Actor is triggerd - traffic steering calculation, taking into account previous messages received during current iteration
 
         return this;    // 'this' because the Agent's behaviour does not change for the next message (we can call it a state)
     }
