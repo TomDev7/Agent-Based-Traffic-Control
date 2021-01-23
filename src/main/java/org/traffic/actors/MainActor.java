@@ -22,7 +22,6 @@ import org.traffic.messages.TrafficMessage;
 import org.traffic.simulation.TrafficSimulationSupervisor;
 import org.traffic.steering.TrafficLight;
 import org.traffic.steering.TrafficLightState;
-import org.traffic.visualisation.GraphUI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.lang.reflect.Array;
@@ -60,7 +59,6 @@ public class MainActor extends AbstractBehavior<String> {
         addAvailableManoeuvresToNetworkNodes();
         createActorsForTrafficNodes();
         createTrafficLights();
-        initGraphUI();
 
 
         // ===== sending mock messages
@@ -172,16 +170,6 @@ public class MainActor extends AbstractBehavior<String> {
                 tn.trafficLights.add(new TrafficLight(tm, TrafficLightState.GREEN));
             }
         }
-    }
-
-    void initGraphUI() {
-
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new GraphUI();
-            }
-        });
     }
         public void createGraph () {
             HashMap<String, Integer[]> coordinates = new HashMap<String, Integer[]>();
