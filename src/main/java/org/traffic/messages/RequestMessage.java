@@ -1,15 +1,16 @@
 package org.traffic.messages;
 
 import org.traffic.graph.TrafficManoeuvre;
+import org.traffic.graph.TrafficNode;
 
 public class RequestMessage implements TrafficMessage {
 
     private TrafficAction actionToBeTaken;
-    private TrafficManoeuvre manoeuvre;
+    private TrafficNode sourceNode;
 
-    public RequestMessage(TrafficAction actionToBeTaken, TrafficManoeuvre manoeuvre) {
+    public RequestMessage(TrafficAction actionToBeTaken, TrafficNode sourceNode) {
         this.actionToBeTaken = actionToBeTaken;
-        this.manoeuvre = manoeuvre;
+        this.sourceNode = sourceNode;
     }
 
     public TrafficAction getActionToBeTaken() {
@@ -20,11 +21,11 @@ public class RequestMessage implements TrafficMessage {
         this.actionToBeTaken = actionToBeTaken;
     }
 
-    public TrafficManoeuvre getManoeuvre() {
-        return manoeuvre;
+    public TrafficNode getSourceNode() {
+        return sourceNode;
     }
 
-    public void setManoeuvre(TrafficManoeuvre manoeuvre) {
-        this.manoeuvre = manoeuvre;
+    public void setManoeuvre(TrafficNode sourceNode) {
+        this.sourceNode = sourceNode;
     }
 }

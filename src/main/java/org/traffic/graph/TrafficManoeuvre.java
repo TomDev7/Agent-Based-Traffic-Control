@@ -4,7 +4,7 @@ public class TrafficManoeuvre {
 
     public TrafficNode sourceTrafficNode;
     public TrafficNode destinationTrafficNode;
-    TrafficEdge destinationTrafficEdge; //TODO leave one of these two - ony edge required
+    TrafficEdge destinationTrafficEdge; //TODO leave one of these two - only edge required
     public int awaitingCarsNumber;
 
     public TrafficManoeuvre(TrafficNode sourceTrafficNode, TrafficNode destinationTrafficNode) {
