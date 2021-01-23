@@ -1,8 +1,9 @@
 package org.traffic.graph;
 
 import akka.actor.typed.ActorRef;
-import org.traffic.actors.TrafficActor;
 import org.traffic.messages.TrafficMessage;
+import org.traffic.steering.TrafficLight;
+import org.traffic.steering.TrafficLightState;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class TrafficNode {
     public ActorRef<TrafficMessage> nodeActor;
     public ArrayList<TrafficNode> neighborNodes = new ArrayList<>();
     public ArrayList<TrafficManoeuvre> availableManoeuvres = new ArrayList<>();
-
+    public ArrayList<TrafficLight> trafficLights = new ArrayList<>();
 
 
     public TrafficNode(int nodeId) {

@@ -19,4 +19,8 @@ public class TrafficLight {
     public void setTrafficLightsState(TrafficLightState trafficLightState) {
         this.trafficLightState = trafficLightState;
     }
+
+    public TrafficManoeuvre getTrafficManoeuvre() {
+        return trafficManoeuvre;
+    }
 }
