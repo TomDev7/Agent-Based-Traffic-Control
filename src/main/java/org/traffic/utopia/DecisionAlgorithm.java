@@ -3,6 +3,7 @@ package org.traffic.utopia;
 import org.traffic.actors.TrafficActor;
 import org.traffic.actors.MainActor;
 import org.traffic.graph.TrafficEdge;
+import org.traffic.graph.TrafficNode;
 
 public class DecisionAlgorithm {
     public static double costFunction(TrafficActor trafficActor)
@@ -24,17 +25,17 @@ public class DecisionAlgorithm {
     return costFunction;
     }
 
-    public static void minimizeCostFunction(TrafficActor trafficActor){
+    public static boolean changeState(TrafficNode trafficNode){
         double disabledTrafficCost = 0;
         double activeTrafficCost =0;
         for (TrafficEdge trafficEdge : MainActor.trafficEdgesList
         ){
-            if(trafficEdge.left == trafficActor.trafficNode) {
+            if(trafficEdge.left == trafficNode) {
                 if (trafficEdge.redLightTimer == 0)
                     disabledTrafficCost += trafficEdge.redLightTimer * trafficEdge.timeWage + trafficEdge.trafficWage * trafficEdge.carAmountLeftToRight;
                 else
                     activeTrafficCost += trafficEdge.trafficWage * trafficEdge.carAmountLeftToRight;
-            } else if (trafficEdge.right == trafficActor.trafficNode) {
+            } else if (trafficEdge.right == trafficNode) {
                 if (trafficEdge.redLightTimer == 0)
                     disabledTrafficCost += trafficEdge.redLightTimer * trafficEdge.timeWage + trafficEdge.trafficWage * trafficEdge.carAmountRightToLeft;
                 else
@@ -42,7 +43,9 @@ public class DecisionAlgorithm {
             }
         }
         if(disabledTrafficCost > activeTrafficCost){
-            // TODO zmien stan swiatel
+            return true; //zmien stan
         }
+        else
+            return false; //nie zmieniaj
     }
 }
