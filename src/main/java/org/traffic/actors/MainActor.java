@@ -36,7 +36,7 @@ public class MainActor extends AbstractBehavior<String> {
     ArrayList<TrafficNode> trafficNodesList = new ArrayList<>();
     public static ArrayList<TrafficEdge> trafficEdgesList = new ArrayList<>(); //
     ArrayList<ActorRef<TrafficMessage>> actorRefsList = new ArrayList<>();
-
+    public Graph graph;
     public static Behavior<String> create() {
 
         return Behaviors.setup(MainActor::new);
@@ -67,10 +67,11 @@ public class MainActor extends AbstractBehavior<String> {
         TrafficManoeuvre tm = new TrafficManoeuvre(trafficNodesList.get(0), trafficNodesList.get(1));
 
         actorRefsList.get(0).tell(new InformationMessage(ta, tm));
-
-        TrafficSimulationSupervisor tss = new TrafficSimulationSupervisor(trafficNodesList, trafficEdgesList, actorRefsList);
+        graph = createGraph();
+        TrafficSimulationSupervisor tss = new TrafficSimulationSupervisor(trafficNodesList, trafficEdgesList, actorRefsList, graph);
         tss.initSimulation();
         tss.startSimulation();
+
 
         return Behaviors.same();
     }
@@ -108,7 +109,7 @@ public class MainActor extends AbstractBehavior<String> {
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(5), trafficNodesList.get(6), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(6), trafficNodesList.get(7), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(7), trafficNodesList.get(8), 0.1, 0.5));
-        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(7), trafficNodesList.get(7), 0.1, 0.5));
+//        trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(7), trafficNodesList.get(7), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(7), trafficNodesList.get(17), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(8), trafficNodesList.get(9), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(9), trafficNodesList.get(10), 0.1, 0.5));
@@ -120,7 +121,7 @@ public class MainActor extends AbstractBehavior<String> {
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(14), trafficNodesList.get(15), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(15), trafficNodesList.get(16), 0.1, 0.5));
         trafficEdgesList.add(new TrafficEdge(trafficNodesList.get(16), trafficNodesList.get(17), 0.1, 0.5));
-        createGraph();
+
     }
 
     void addNeighborsToNetworkNodes() {
@@ -169,26 +170,26 @@ public class MainActor extends AbstractBehavior<String> {
             }
         }
     }
-        public void createGraph () {
+        public Graph createGraph () {
             HashMap<String, Integer[]> coordinates = new HashMap<String, Integer[]>();
-            coordinates.put("0", new Integer[]{100, 100});
-            coordinates.put("1", new Integer[]{100, 70});
-            coordinates.put("2", new Integer[]{100, 50});
-            coordinates.put("3", new Integer[]{100, 20});
-            coordinates.put("4", new Integer[]{100, 0});
-            coordinates.put("5", new Integer[]{80, 0});
-            coordinates.put("6", new Integer[]{50, 0});
-            coordinates.put("7", new Integer[]{-20, 0});
-            coordinates.put("8", new Integer[]{-80, 0});
-            coordinates.put("9", new Integer[]{-80, 20});
-            coordinates.put("10", new Integer[]{-80, 100});
-            coordinates.put("11", new Integer[]{-50, 100});
-            coordinates.put("12", new Integer[]{-40, 80});
-            coordinates.put("13", new Integer[]{-30, 100});
-            coordinates.put("14", new Integer[]{0, 100});
-            coordinates.put("15", new Integer[]{0, 70});
-            coordinates.put("16", new Integer[]{0, 50});
-            coordinates.put("17", new Integer[]{-20, 50});
+            coordinates.put("0", new Integer[]{1000, 1000});
+            coordinates.put("1", new Integer[]{1000, 700});
+            coordinates.put("2", new Integer[]{1000, 500});
+            coordinates.put("3", new Integer[]{1000, 200});
+            coordinates.put("4", new Integer[]{1000, 0});
+            coordinates.put("5", new Integer[]{600, 0});
+            coordinates.put("6", new Integer[]{200, 0});
+            coordinates.put("7", new Integer[]{-400, 0});
+            coordinates.put("8", new Integer[]{-1200, 0});
+            coordinates.put("9", new Integer[]{-1200, 200});
+            coordinates.put("10", new Integer[]{-1200, 1000});
+            coordinates.put("11", new Integer[]{-800, 1000});
+            coordinates.put("12", new Integer[]{-600, 800});
+            coordinates.put("13", new Integer[]{-400, 1000});
+            coordinates.put("14", new Integer[]{0, 1000});
+            coordinates.put("15", new Integer[]{0, 700});
+            coordinates.put("16", new Integer[]{0, 500});
+            coordinates.put("17", new Integer[]{-400, 500});
 
             System.setProperty("org.graphstream.ui", "swing");
             System.setProperty("gs.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
@@ -207,21 +208,15 @@ public class MainActor extends AbstractBehavior<String> {
                 temp.setAttribute("x", coordinates.get(id)[0]);
                 temp.setAttribute("y", coordinates.get(id)[1]);
 
-
             }
-
-            float speedMax;
-            Random rand = new Random();
-            for (TrafficEdge te : trafficEdgesList) {
+            for (TrafficEdge te : trafficEdgesList)
+            {
                 String id = "" + te.left.getNodeId() + te.right.getNodeId();
                 graph.addEdge(id, te.left.getNodeId() + "", te.right.getNodeId() + "");
-                Edge edge = graph.getEdge(id);
-                edge.setAttribute("ui.class", "Edge" + id);
-                edge.setAttribute("speedMax", rand.nextInt(100));
-                speedMax = (float) edge.getNumber("speedMax");
-                edge.setAttribute("ui.color", speedMax / 100);
             }
-            Viewer viewer = graph.display(false);
-            View view = viewer.getDefaultView();
+            graph.display(false);
+            return graph;
         }
+
+
     }

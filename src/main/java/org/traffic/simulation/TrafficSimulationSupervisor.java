@@ -2,6 +2,12 @@ package org.traffic.simulation;
 
 
 import akka.actor.typed.ActorRef;
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.ui.graphicGraph.stylesheet.StyleConstants;
+import org.graphstream.ui.spriteManager.Sprite;
+import org.graphstream.ui.spriteManager.SpriteManager;
 import org.traffic.actors.TrafficActor;
 import org.traffic.graph.TrafficEdge;
 import org.traffic.graph.TrafficManoeuvre;
@@ -22,6 +28,8 @@ public class TrafficSimulationSupervisor {
     ArrayList<TrafficNode> trafficNodesList = new ArrayList<>();
     ArrayList<TrafficEdge> trafficEdgesList = new ArrayList<>();
     ArrayList<ActorRef<TrafficMessage>> actorRefsList = new ArrayList<>();
+    Graph graph;
+
 
     //define simulation variables:
     public TrafficNode startNode;   //TODO assign appropriate value
@@ -33,11 +41,12 @@ public class TrafficSimulationSupervisor {
     private boolean runSimulation;
     private int cycleNumber = 0;
 
-    public TrafficSimulationSupervisor(ArrayList<TrafficNode> trafficNodesList, ArrayList<TrafficEdge> trafficEdgesList, ArrayList<ActorRef<TrafficMessage>> actorRefsList) {
+    public TrafficSimulationSupervisor(ArrayList<TrafficNode> trafficNodesList, ArrayList<TrafficEdge> trafficEdgesList, ArrayList<ActorRef<TrafficMessage>> actorRefsList, Graph graph) {
 
         this.trafficNodesList = trafficNodesList;
         this.trafficEdgesList = trafficEdgesList;
         this.actorRefsList = actorRefsList;
+        this.graph = graph;
     }
 
     public int initSimulation() {
@@ -87,6 +96,7 @@ public class TrafficSimulationSupervisor {
         while (runSimulation == true) {
 
             simulationLoopCycle();
+            refreshgraph();
             sendNewIterationMessages();
 
             try {
@@ -213,6 +223,69 @@ public class TrafficSimulationSupervisor {
         }
 
         return 1;
+    }
+
+
+    void refreshgraph(){
+
+        int carAmount;
+        for (TrafficNode tn : trafficNodesList)
+        {
+            String label ="";
+            SpriteManager spriteManager = new SpriteManager(graph);
+            String id = tn.getNodeId() + "";
+            Node current = graph.getNode(id);
+            int i=0;
+            for (TrafficManoeuvre tm : tn.availableManoeuvres) {
+                int j=0;
+                label = tm.toString() + "\n cars waiting: " + tm.awaitingCarsNumber + " \n";
+                Sprite sprite = spriteManager.addSprite(id + "" + i);
+                sprite.attachToNode(id);
+                sprite.setPosition(StyleConstants.Units.PX, 75, 10 + 15 * i, 0);
+                i+=1;
+                sprite.setAttribute("ui.label", label);
+                Sprite lightSprite = spriteManager.addSprite("tl" + id + "" + i);
+                lightSprite.attachToNode(id);
+                Node destNode = graph.getNode(tm.destinationTrafficNode.getNodeId());
+
+                int x =Integer.parseInt(destNode.getAttribute("x").toString());
+                int y =Integer.parseInt(destNode.getAttribute("y").toString());
+
+                if(x > Integer.parseInt(current.getAttribute("x").toString()))
+                {
+                    lightSprite.setPosition(StyleConstants.Units.PX, 10, 10, 0);
+                }
+                else{
+                    if(x < Integer.parseInt(current.getAttribute("x").toString()))
+                    {
+                        lightSprite.setPosition(StyleConstants.Units.PX, -10, -10, 0);
+                    }
+                    else{
+                        if(y > Integer.parseInt(current.getAttribute("y").toString())){
+                            lightSprite.setPosition(StyleConstants.Units.PX, -10, 10, 0);
+                        }
+                        else{
+                            lightSprite.setPosition(StyleConstants.Units.PX, 10, -10, 0);
+                        }
+                    }
+                }
+                if(tn.trafficLights.get(j).getTrafficLightsState() == TrafficLightState.GREEN )
+                    lightSprite.setAttribute("ui.class", "greenlight");
+                else
+                    lightSprite.setAttribute("ui.class", "redlight");
+            }
+        }
+        for (TrafficEdge te : trafficEdgesList) {
+            String id = "" + te.left.getNodeId() + te.right.getNodeId();
+            Edge edge = graph.getEdge(id);
+            edge.setAttribute("ui.class", "Edge" + id);
+            edge.setAttribute("carAmount", te.carAmountLeftToRight + te.carAmountRightToLeft);
+            carAmount = (int)edge.getNumber("carAmount");
+            float edgeColor = carAmount / 100;
+            edge.setAttribute("ui.color", edgeColor );
+            edge.setAttribute("ui.label", carAmount);
+        }
+
     }
 
 }

@@ -7,17 +7,30 @@ node {
     text-padding: 2px;
     shape: freeplane;
 }
-sprite {
-    /*fill-color: red;*/
-    /*sprite-orientation: to;*/
-    /*shape: arrow;*/
+sprite{
+    fill-mode: none;
+    text-size: 8px;
+    size: 0px;
+}
+sprite.greenlight{
+    fill-mode: plain;
+    fill-color: #0d670d;
+    size: 10px;
+}
+sprite.redlight{
+    fill-mode: plain;
+    fill-color: red;
+    size: 10px;
 }
 
 edge{
-    shape: cubic-curve;
     shape: line;
     fill-mode: dyn-plain;
     fill-color: green,green, yellow, red;
     arrow-size: 3px, 2px;
+    text-mode: normal;
+    text-background-mode: plain;
+    text-style: bold;
+    text-padding: 4px;
 
 }
