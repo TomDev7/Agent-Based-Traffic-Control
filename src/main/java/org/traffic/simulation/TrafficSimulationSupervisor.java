@@ -35,7 +35,7 @@ public class TrafficSimulationSupervisor {
     public TrafficNode startNode;   //TODO assign appropriate value
     public int numOfCars;   //TODO assign appropriate value
     public static int TIME_TICK_IN_MILLISECONDS = 5000;
-    public static int CARS_PER_TICK = 3;    //how many cars can go through a node (take a manoeuvre) during one simulation clock tick
+    public static int CARS_PER_TICK = 40;    //how many cars can go through a node (take a manoeuvre) during one simulation clock tick
 
     //simulation control variables:
     private boolean runSimulation;
@@ -234,10 +234,10 @@ public class TrafficSimulationSupervisor {
             String label ="";
             SpriteManager spriteManager = new SpriteManager(graph);
             String id = tn.getNodeId() + "";
-            Node current = graph.getNode(id);
             int i=0;
+            int j=0;
             for (TrafficManoeuvre tm : tn.availableManoeuvres) {
-                int j=0;
+
                 label = tm.toString() + "\n cars waiting: " + tm.awaitingCarsNumber + " \n";
                 Sprite sprite = spriteManager.addSprite(id + "" + i);
                 sprite.attachToNode(id);
@@ -247,32 +247,34 @@ public class TrafficSimulationSupervisor {
                 Sprite lightSprite = spriteManager.addSprite("tl" + id + "" + i);
                 lightSprite.attachToNode(id);
                 Node destNode = graph.getNode(tm.destinationTrafficNode.getNodeId());
-
+                Node sourceNode = graph.getNode(tm.sourceTrafficNode.getNodeId());
+                int z=0;
                 int x =Integer.parseInt(destNode.getAttribute("x").toString());
                 int y =Integer.parseInt(destNode.getAttribute("y").toString());
+                if(j<1 || j>4) {
+                    if (x > Integer.parseInt(sourceNode.getAttribute("x").toString())) {
+                        lightSprite.setPosition(StyleConstants.Units.PX, -10, 10, 0);
+                    }
+                    else {
+                        if (x < Integer.parseInt(sourceNode.getAttribute("x").toString()) && y == Integer.parseInt(sourceNode.getAttribute("y").toString())) {
+                            lightSprite.setPosition(StyleConstants.Units.PX, -10, -10, 0);
+                        }
+                        else {
+                                if (y < Integer.parseInt(sourceNode.getAttribute("y").toString())) {
+                                            lightSprite.setPosition(StyleConstants.Units.PX, 10, -10, 0);
+                                    }
+                                else  {
+                                        lightSprite.setPosition(StyleConstants.Units.PX, 10, 10, 0);
+                                    }
 
-                if(x > Integer.parseInt(current.getAttribute("x").toString()))
-                {
-                    lightSprite.setPosition(StyleConstants.Units.PX, 10, 10, 0);
-                }
-                else{
-                    if(x < Integer.parseInt(current.getAttribute("x").toString()))
-                    {
-                        lightSprite.setPosition(StyleConstants.Units.PX, -10, -10, 0);
-                    }
-                    else{
-                        if(y > Integer.parseInt(current.getAttribute("y").toString())){
-                            lightSprite.setPosition(StyleConstants.Units.PX, -10, 10, 0);
+                            }
                         }
-                        else{
-                            lightSprite.setPosition(StyleConstants.Units.PX, 10, -10, 0);
-                        }
-                    }
+                    if (tn.trafficLights.get(j).getTrafficLightsState() == TrafficLightState.GREEN)
+                        lightSprite.setAttribute("ui.class", "greenlight");
+                    else
+                        lightSprite.setAttribute("ui.class", "redlight");
                 }
-                if(tn.trafficLights.get(j).getTrafficLightsState() == TrafficLightState.GREEN )
-                    lightSprite.setAttribute("ui.class", "greenlight");
-                else
-                    lightSprite.setAttribute("ui.class", "redlight");
+                j+=1;
             }
         }
         for (TrafficEdge te : trafficEdgesList) {

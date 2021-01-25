@@ -115,6 +115,7 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
 
         if(changeState(trafficNode))
         {
+//            java.awt.Toolkit.getDefaultToolkit().beep();
             for(TrafficLight tl : trafficNode.trafficLights){
                 if(tl.getTrafficLightsState() ==  TrafficLightState.GREEN)
                     tl.setTrafficLightsState(TrafficLightState.RED);
