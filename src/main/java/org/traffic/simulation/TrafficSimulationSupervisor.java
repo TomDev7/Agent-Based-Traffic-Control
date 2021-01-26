@@ -34,8 +34,8 @@ public class TrafficSimulationSupervisor {
     //define simulation variables:
     public TrafficNode startNode;   //TODO assign appropriate value
     public int numOfCars;   //TODO assign appropriate value
-    public static int TIME_TICK_IN_MILLISECONDS = 5000;
-    public static int CARS_PER_TICK = 40;    //how many cars can go through a node (take a manoeuvre) during one simulation clock tick
+    public static int TIME_TICK_IN_MILLISECONDS = 2000;
+    public static int CARS_PER_TICK = 30;    //how many cars can go through a node (take a manoeuvre) during one simulation clock tick
 
     //simulation control variables:
     private boolean runSimulation;
@@ -52,7 +52,7 @@ public class TrafficSimulationSupervisor {
     public int initSimulation() {
 
         //TODO set traffic to given nodes
-        trafficNodesList.get(1).availableManoeuvres.get(0).awaitingCarsNumber = 10;
+        trafficNodesList.get(1).availableManoeuvres.get(0).awaitingCarsNumber = 20;
 
         return 1;
     }
@@ -175,21 +175,21 @@ public class TrafficSimulationSupervisor {
                     te.carAmountLeftToRight -= carsToMove;
                     tm.awaitingCarsNumber += carsToMove;
                 }
-
-                te.right.availableManoeuvres.get(0).awaitingCarsNumber += te.carAmountLeftToRight; //adding remaining cars to some manoeuvre
+                if(te.right.availableManoeuvres.size() != 0 && te.right.availableManoeuvres.get(0) != null)
+                    te.right.availableManoeuvres.get(0).awaitingCarsNumber += te.carAmountLeftToRight; //adding remaining cars to some manoeuvre
             }
 
             //for cars moving B to A along the edge
             if (te.carAmountRightToLeft > 0) {
 
-                for (TrafficManoeuvre tm : te.left.availableManoeuvres) {
+                for (TrafficManoeuvre tm : te.left.availableManoeuvres ) {
 
                     int carsToMove = rand.nextInt(te.carAmountRightToLeft);
                     te.carAmountRightToLeft -= carsToMove;
                     tm.awaitingCarsNumber += carsToMove;
                 }
-
-                te.left.availableManoeuvres.get(0).awaitingCarsNumber += te.carAmountRightToLeft; //adding remaining cars to some manoeuvre
+                if(te.left.availableManoeuvres.size() != 0 && te.left.availableManoeuvres.get(0) != null)
+                    te.left.availableManoeuvres.get(0).awaitingCarsNumber += te.carAmountRightToLeft; //adding remaining cars to some manoeuvre
             }
         }
 

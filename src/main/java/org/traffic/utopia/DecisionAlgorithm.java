@@ -1,5 +1,6 @@
 package org.traffic.utopia;
 
+import com.typesafe.config.ConfigException;
 import org.traffic.actors.TrafficActor;
 import org.traffic.actors.MainActor;
 import org.traffic.graph.TrafficEdge;
@@ -12,6 +13,10 @@ import java.util.Random;
 
 public class DecisionAlgorithm {
     public static boolean changeState(TrafficNode trafficNode){
+        if(trafficNode == null || trafficNode.availableManoeuvres.size() == 0)
+        {
+            return false;
+        }
         double disabledTrafficCost = 0;
         double activeTrafficCost =0;
         int i=0;
@@ -36,9 +41,5 @@ public class DecisionAlgorithm {
         else
             return false; //nie zmieniaj
 
-//        Random rand = new Random();
-//        if(rand.nextInt(10)%2==0)
-//            return  true;
-//        else return false;
     }
 }

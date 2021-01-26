@@ -27,7 +27,7 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
     private ArrayList<RequestMessage> requestBuffer = new ArrayList<>();
     private ArrayList<TrafficDecision>[] decisionsHistory;
 
-    final int DECISION_HISTORY_LENGTH = 3;
+    final int DECISION_HISTORY_LENGTH = 10;
 
 
     public static Behavior<TrafficMessage> create(TrafficNode tn) {
@@ -109,19 +109,10 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
 
         int summedTraffic[] = new int[trafficNode.neighborNodes.size()];
 
-        for (TrafficManoeuvre tm : trafficNode.availableManoeuvres) {
-
-        }
 
         if(changeState(trafficNode))
         {
-//            java.awt.Toolkit.getDefaultToolkit().beep();
-            for(TrafficLight tl : trafficNode.trafficLights){
-                if(tl.getTrafficLightsState() ==  TrafficLightState.GREEN)
-                    tl.setTrafficLightsState(TrafficLightState.RED);
-                else
-                    tl.setTrafficLightsState(TrafficLightState.GREEN);
-            }
+            changeNodeLights(trafficNode);
         }
 
 
@@ -161,11 +152,13 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
         for (int i = 0; i < trafficNode.trafficLights.size(); i++) {
 
 
-            if (decisionCounter[i] == maxVote) {
-                decisionsHistory[3].add(new TrafficDecision(trafficNode.trafficLights.get(i), TrafficAction.OPEN));  // remember to OPEN all manouevres with highest votes
-            } else {
-                decisionsHistory[3].add(new TrafficDecision(trafficNode.trafficLights.get(i), TrafficAction.CLOSE)); // remember to CLOSE all other manouevres
-            }
+            if (decisionCounter[i] == maxVote)
+                changeNodeLights(trafficNode);
+//            {
+//                decisionsHistory[3].add(new TrafficDecision(trafficNode.trafficLights.get(i), TrafficAction.OPEN));  // remember to OPEN all manouevres with highest votes
+//            } else {
+//                decisionsHistory[3].add(new TrafficDecision(trafficNode.trafficLights.get(i), TrafficAction.CLOSE)); // remember to CLOSE all other manouevres
+//            }
         }
 
         requestBuffer.clear();  //clearing request buffer for next iteration
@@ -178,5 +171,15 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
         actorRef.tell(new RequestMessage(trafficAction, this.trafficNode)); //send request to node B so that it opens all manouevres coming from this node
 
         return 0;
+    }
+
+    void changeNodeLights(TrafficNode trafficNode){
+        for(TrafficLight tl : trafficNode.trafficLights){
+            if(tl.getTrafficLightsState() ==  TrafficLightState.GREEN)
+                tl.setTrafficLightsState(TrafficLightState.RED);
+            else
+                tl.setTrafficLightsState(TrafficLightState.GREEN);
+        }
+
     }
 }

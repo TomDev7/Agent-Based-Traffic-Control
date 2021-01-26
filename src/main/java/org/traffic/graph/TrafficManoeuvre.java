@@ -7,15 +7,15 @@ public class TrafficManoeuvre {
     TrafficEdge destinationTrafficEdge; //TODO leave one of these two - only edge required
     public int awaitingCarsNumber;
     public int waitingTime;
-    public int wage1, wage2, wage3;
+    public double wage1, wage2, wage3;
 
     public TrafficManoeuvre(TrafficNode sourceTrafficNode, TrafficNode destinationTrafficNode) {
         this.sourceTrafficNode = sourceTrafficNode;
         this.destinationTrafficNode = destinationTrafficNode;
         this.waitingTime = 0;
-        this.wage1 = 1;
-        this.wage2 = 1;
-        this.wage3 = 1;
+        this.wage1 = 5; // active cars
+        this.wage2 = 0.1; // waiting cars
+        this.wage3 = 1; // waiting time
     }
     public void incrementTime()
     {
