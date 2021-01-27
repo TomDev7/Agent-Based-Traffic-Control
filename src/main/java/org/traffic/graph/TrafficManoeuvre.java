@@ -14,7 +14,7 @@ public class TrafficManoeuvre {
         this.destinationTrafficNode = destinationTrafficNode;
         this.waitingTime = 0;
         this.wage1 = 5; // active cars
-        this.wage2 = 0.1; // waiting cars
+        this.wage2 = 1; // waiting cars
         this.wage3 = 1; // waiting time
     }
     public void incrementTime()
