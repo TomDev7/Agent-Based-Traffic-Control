@@ -1,14 +1,15 @@
 package org.traffic.messages;
 
+import org.traffic.graph.TrafficNode;
 import org.traffic.steering.TrafficLight;
 
 public class TrafficDecision {
 
-    public TrafficLight trafficLight;
+    public TrafficNode trafficNode;
     public TrafficAction trafficAction;
 
-    public TrafficDecision(TrafficLight trafficLight, TrafficAction trafficAction) {
-        this.trafficLight = trafficLight;
+    public TrafficDecision(TrafficNode trafficNode, TrafficAction trafficAction) {
+        this.trafficNode = trafficNode;
         this.trafficAction = trafficAction;
     }
 }

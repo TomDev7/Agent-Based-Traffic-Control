@@ -35,7 +35,7 @@ public class TrafficSimulationSupervisor {
     public TrafficNode startNode;   //TODO assign appropriate value
     public int numOfCars;   //TODO assign appropriate value
     public static int TIME_TICK_IN_MILLISECONDS = 2000;
-    public static int CARS_PER_TICK = 10;    //how many cars can go through a node (take a manoeuvre) during one simulation clock tick
+    public static int CARS_PER_TICK = 100;    //how many cars can go through a node (take a manoeuvre) during one simulation clock tick
 
     //simulation control variables:
     private boolean runSimulation;
@@ -52,7 +52,7 @@ public class TrafficSimulationSupervisor {
     public int initSimulation() {
 
         //TODO set traffic to given nodes
-        trafficNodesList.get(1).availableManoeuvres.get(0).awaitingCarsNumber = 100;
+        trafficNodesList.get(1).availableManoeuvres.get(0).awaitingCarsNumber = 1000;
 
         return 1;
     }

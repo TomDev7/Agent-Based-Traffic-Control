@@ -63,7 +63,7 @@ public class MainActor extends AbstractBehavior<String> {
 
         // ===== sending mock messages
 
-        TrafficAction ta = TrafficAction.OPEN;
+        TrafficAction ta = TrafficAction.STAY;
         TrafficManoeuvre tm = new TrafficManoeuvre(trafficNodesList.get(0), trafficNodesList.get(1));
 
         actorRefsList.get(0).tell(new InformationMessage(ta, tm));

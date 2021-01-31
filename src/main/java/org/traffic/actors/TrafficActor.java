@@ -27,7 +27,7 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
     private ArrayList<RequestMessage> requestBuffer = new ArrayList<>();
     private ArrayList<TrafficDecision>[] decisionsHistory;
 
-    final int DECISION_HISTORY_LENGTH = 10;
+    final int DECISION_HISTORY_LENGTH = 3;
 
 
     public static Behavior<TrafficMessage> create(TrafficNode tn) {
@@ -93,10 +93,8 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
         // ----- execute remembered decision:
         for (TrafficDecision td : decisionsHistory[0]) {
 
-            if (td.trafficAction == TrafficAction.OPEN) {
-                td.trafficLight.setTrafficLightsState(TrafficLightState.GREEN);
-            } else if (td.trafficAction == TrafficAction.CLOSE) {
-                td.trafficLight.setTrafficLightsState(TrafficLightState.RED);
+            if (td.trafficAction == TrafficAction.CHANGE) {
+                changeNodeLights(trafficNode);
             }
         }
 
@@ -105,62 +103,34 @@ public class TrafficActor extends AbstractBehavior<TrafficMessage> {
             decisionsHistory[i-1] = decisionsHistory[i];
         }
 
-        // ----- TODO sum up current traffic
 
-        int summedTraffic[] = new int[trafficNode.neighborNodes.size()];
-
-
-        if(changeState(trafficNode))
+        if(requestBuffer.size() > 1) // jesli 2 lub wiecej requestow
         {
-            changeNodeLights(trafficNode);
+            decisionsHistory[DECISION_HISTORY_LENGTH -1].add(new TrafficDecision(trafficNode, TrafficAction.CHANGE));
+        }
+        else{ // jesli nie to utopia
+            if(changeState(trafficNode))
+            {
+                decisionsHistory[DECISION_HISTORY_LENGTH -1].add(new TrafficDecision(trafficNode, TrafficAction.CHANGE));
+            }
+            else
+                decisionsHistory[DECISION_HISTORY_LENGTH -1].add(new TrafficDecision(trafficNode, TrafficAction.STAY));
+
         }
 
-
-
-        // ----- TODO calculate decision based on own traffic data
-
-        int tempMaxVoteFromOwnDecision = 1; //TODO replace with actual calculated value
-
-        // -----  taking into account requests from neighbouring nodes:
-
-        int decisionCounter[] = new int[trafficNode.trafficLights.size()];  // the bigger the number, the higher priority to OPEN manoeuvres
-
-        for(RequestMessage request : requestBuffer) {
-
-            int i = 0;
-            for(TrafficLight trafficLight : trafficNode.trafficLights) {        // in theory, all traffic lights for maneouvres with the same sourceNode schould end up with the same 'vote' number
-
-                if (trafficLight.getTrafficManoeuvre().sourceTrafficNode.equals(request.getSourceNode())) {
-
-                    if (request.getActionToBeTaken() == TrafficAction.OPEN) {
-                        decisionCounter[i]++;
-                    } else if (request.getActionToBeTaken() == TrafficAction.CLOSE) {
-                        decisionCounter[i]--;
-                    }
+        for(TrafficManoeuvre tm : trafficNode.availableManoeuvres) // wysylanie requestu
+        {
+            if(tm.awaitingCarsNumber > 50)
+            {
+                for(TrafficLight destLight : tm.destinationTrafficNode.trafficLights)
+                {
+                    TrafficNode sourceNode = destLight.getTrafficManoeuvre().sourceTrafficNode;
+                    if(sourceNode == trafficNode && destLight.getTrafficLightsState() == TrafficLightState.RED)
+                        sendRequest(tm.destinationTrafficNode.nodeActor, TrafficAction.CHANGE);
                 }
-                i++;
+
             }
         }
-
-        int maxVote = tempMaxVoteFromOwnDecision;
-
-        for (int i = 0; i < trafficNode.trafficLights.size(); i++) {
-
-            maxVote = Math.max(maxVote, decisionCounter[i]);
-        }
-
-        for (int i = 0; i < trafficNode.trafficLights.size(); i++) {
-
-
-            if (decisionCounter[i] == maxVote)
-                changeNodeLights(trafficNode);
-//            {
-//                decisionsHistory[3].add(new TrafficDecision(trafficNode.trafficLights.get(i), TrafficAction.OPEN));  // remember to OPEN all manouevres with highest votes
-//            } else {
-//                decisionsHistory[3].add(new TrafficDecision(trafficNode.trafficLights.get(i), TrafficAction.CLOSE)); // remember to CLOSE all other manouevres
-//            }
-        }
-
         requestBuffer.clear();  //clearing request buffer for next iteration
 
         return this;    // 'this' because the Agent's behaviour does not change for the next message (we can call it a state)
