@@ -112,7 +112,7 @@ public class TrafficSimulationSupervisor {
     public int simulationLoopCycle() {
 
         System.out.println("Simulation cycle " + cycleNumber);
-        printGraphReport();
+       // printGraphReport();
 
         // moves cars from lanes (awaiting for manoeuvre) to the edge after the node
         for (TrafficNode tn : trafficNodesList) {
@@ -155,7 +155,7 @@ public class TrafficSimulationSupervisor {
                         }
                     }
 
-                    System.out.println(carsMoved + " cars moved from " + tl.getTrafficManoeuvre().sourceTrafficNode + " to " + tl.getTrafficManoeuvre().destinationTrafficNode);
+                    //System.out.println(carsMoved + " cars moved from " + tl.getTrafficManoeuvre().sourceTrafficNode + " to " + tl.getTrafficManoeuvre().destinationTrafficNode);
 
                 }
             }
