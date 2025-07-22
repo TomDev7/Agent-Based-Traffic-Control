@@ -1,6 +1,6 @@
 # 🚦 Traffic Simulation with Akka and GraphStream
 
-This Java-based project simulates traffic flow using an **actor-based model** powered by **Akka Typed** and visualized with **GraphStream**. It demonstrates concurrency, message-passing, and dynamic graph visualization to model intersections, traffic lights, and vehicle behavior. Project developed for the purposes of AASD subject at Warsaw University of Technology.
+This Java-based project simulates traffic flow using an **actor-based model** powered by **Akka Typed** and visualized with **GraphStream**. It demonstrates concurrency, message-passing, and dynamic graph visualization to model intersections, traffic lights, and vehicle behavior. Developed as group project for the purposes of Agent & Actor Decision Systems subject at Warsaw University of Technology.
 
 ## ⚙️ How It Works
 - The simulation uses **actors** to represent different components (e.g., traffic lights, roads, and control systems).
